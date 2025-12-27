@@ -11,6 +11,7 @@
         :root {
             --bg: #000000;
             --bg-secondary: #0f0f0f;
+            --bg-tertiary: #1a1a1a;
             --text: #ffffff;
             --text-muted: #888888;
             --accent-orange: #FF9D00;
@@ -18,6 +19,7 @@
             --accent-purple: #7700FF;
             --accent-blue: #0066FF;
             --border: rgba(255, 255, 255, 0.1);
+            --success: #00ff00;
         }
 
         body {
@@ -25,26 +27,53 @@
             background: var(--bg);
             color: var(--text);
             display: flex;
-            align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            padding: 2rem;
         }
 
-        .container {
-            max-width: 600px;
-            text-align: center;
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
         }
 
-        .emoji {
-            font-size: 5rem;
+        .logo {
+            padding: 0 2rem 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 1px solid var(--border);
             margin-bottom: 2rem;
-            animation: float 3s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        .nav-link {
+            padding: 0.75rem 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(119, 0, 255, 0.1);
+            color: var(--accent-purple);
+            border-left: 3px solid var(--accent-purple);
+            padding-left: calc(2rem - 3px);
+        }
+
+        .main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 3rem;
+        }
+
+        .hero {
+            margin-bottom: 4rem;
         }
 
         h1 {
@@ -53,135 +82,482 @@
             background: linear-gradient(135deg, var(--accent-orange), var(--accent-pink), var(--accent-purple), var(--accent-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
-        p {
+        .hero p {
             font-size: 1.25rem;
             color: var(--text-muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
             margin-bottom: 3rem;
-            line-height: 1.6;
         }
 
-        .status {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: rgba(119, 0, 255, 0.2);
-            border: 1px solid var(--accent-purple);
-            border-radius: 8px;
-            color: var(--accent-purple);
-            font-weight: 600;
-            margin-bottom: 2rem;
-        }
-
-        .notify-form {
-            display: flex;
-            gap: 1rem;
-            max-width: 400px;
-            margin: 0 auto 2rem;
-        }
-
-        .email-input {
-            flex: 1;
-            padding: 1rem;
+        .card {
             background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .card h2 {
+            color: var(--accent-purple);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .auth-demo {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 8px;
             color: var(--text);
             font-size: 1rem;
         }
 
-        .notify-btn {
-            padding: 1rem 2rem;
-            background: var(--accent-purple);
-            border: none;
+        .btn {
+            padding: 0.75rem 1.5rem;
             border-radius: 8px;
-            color: #fff;
+            border: none;
+            cursor: pointer;
             font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--accent-purple);
+            color: #fff;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #8800ff;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(119, 0, 255, 0.2);
+            border: 1px solid var(--accent-purple);
+            border-radius: 4px;
+            color: var(--accent-purple);
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-purple);
+            color: #fff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .method-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .notify-btn:hover {
-            background: #8800ff;
-            transform: scale(1.05);
+        .method-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
         }
 
-        .links {
+        .method-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tabs {
             display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .link {
-            color: var(--accent-blue);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .link:hover {
-            color: var(--accent-purple);
-        }
-
-        .progress-bar {
-            max-width: 400px;
-            height: 4px;
-            background: var(--bg-secondary);
-            border-radius: 2px;
-            margin: 3rem auto 1rem;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
-            width: 45%;
-            animation: progress 2s ease-in-out infinite;
-        }
-
-        @keyframes progress {
-            0%, 100% { width: 45%; }
-            50% { width: 75%; }
-        }
-
-        .eta {
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover, .tab.active {
+            color: var(--accent-purple);
+            border-bottom-color: var(--accent-purple);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="emoji">🔐</div>
-        <h1>Authentication Service</h1>
-        <p>Secure authentication and identity management for BlackRoad applications</p>
+    <aside class="sidebar">
+        <div class="logo">🔐 Auth Service</div>
+        <div class="nav-link active">Overview</div>
+        <div class="nav-link">Quick Start</div>
+        <div class="nav-link">Authentication Methods</div>
+        <div class="nav-link">API Reference</div>
+        <div class="nav-link">Security</div>
+        <div class="nav-link">SDKs</div>
+        <div class="nav-link">Examples</div>
+    </aside>
 
-        <div class="status">🚧 Coming Soon</div>
-
-        <form class="notify-form" onsubmit="notify(event)">
-            <input type="email" class="email-input" placeholder="Get notified when we launch" required>
-            <button type="submit" class="notify-btn">Notify Me</button>
-        </form>
-
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
+    <main class="main">
+        <div class="hero">
+            <h1>Authentication Service</h1>
+            <p>Secure, scalable authentication and identity management for your applications</p>
         </div>
-        <p class="eta">Currently in development • Launching soon</p>
 
-        <div class="links">
-            <a href="https://blackroad.io" class="link">← Back to BlackRoad</a>
-            <a href="https://docs.blackroad.io" class="link">Documentation</a>
-            <a href="https://status.blackroad.io" class="link">Status</a>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">99.99%</div>
+                <div class="stat-label">Uptime SLA</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">&lt;50ms</div>
+                <div class="stat-label">Auth Latency</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8+</div>
+                <div class="stat-label">Auth Methods</div>
+            </div>
         </div>
-    </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('overview')">Overview</div>
+            <div class="tab" onclick="switchTab('quickstart')">Quick Start</div>
+            <div class="tab" onclick="switchTab('demo')">Live Demo</div>
+        </div>
+
+        <div id="overview" class="tab-content active">
+            <div class="grid">
+                <div class="card">
+                    <h2>🔑 Supported Methods</h2>
+                    <div class="method-grid">
+                        <div class="method-card">
+                            <div class="method-icon">📧</div>
+                            <strong>Email/Password</strong>
+                        </div>
+                        <div class="method-card">
+                            <div class="method-icon">📱</div>
+                            <strong>Phone/SMS</strong>
+                        </div>
+                        <div class="method-card">
+                            <div class="method-icon">🔗</div>
+                            <strong>Magic Links</strong>
+                        </div>
+                        <div class="method-card">
+                            <div class="method-icon">🎫</div>
+                            <strong>OAuth 2.0</strong>
+                        </div>
+                        <div class="method-card">
+                            <div class="method-icon">🌐</div>
+                            <strong>SSO/SAML</strong>
+                        </div>
+                        <div class="method-card">
+                            <div class="method-icon">🔐</div>
+                            <strong>WebAuthn</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>✨ Key Features</h2>
+                    <ul class="feature-list">
+                        <li><span class="check">✓</span> Multi-factor authentication (MFA)</li>
+                        <li><span class="check">✓</span> Session management</li>
+                        <li><span class="check">✓</span> JWT token generation</li>
+                        <li><span class="check">✓</span> Role-based access control (RBAC)</li>
+                        <li><span class="check">✓</span> Password reset flows</li>
+                        <li><span class="check">✓</span> Email verification</li>
+                        <li><span class="check">✓</span> Audit logging</li>
+                        <li><span class="check">✓</span> Rate limiting</li>
+                        <li><span class="check">✓</span> Passwordless auth</li>
+                        <li><span class="check">✓</span> Social login (Google, GitHub, etc)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🛡️ Enterprise Security</h2>
+                <div class="grid" style="margin-top: 1.5rem;">
+                    <div>
+                        <h3 style="color: var(--accent-blue); font-size: 1.1rem; margin-bottom: 1rem;">Compliance</h3>
+                        <ul class="feature-list">
+                            <li><span class="check">✓</span> SOC 2 Type II</li>
+                            <li><span class="check">✓</span> GDPR compliant</li>
+                            <li><span class="check">✓</span> HIPAA ready</li>
+                            <li><span class="check">✓</span> ISO 27001</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--accent-blue); font-size: 1.1rem; margin-bottom: 1rem;">Security Features</h3>
+                        <ul class="feature-list">
+                            <li><span class="check">✓</span> End-to-end encryption</li>
+                            <li><span class="check">✓</span> Brute force protection</li>
+                            <li><span class="check">✓</span> Anomaly detection</li>
+                            <li><span class="check">✓</span> Device fingerprinting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="quickstart" class="tab-content">
+            <div class="card">
+                <h2>🚀 Quick Start</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Get started with BlackRoad Auth in under 5 minutes</p>
+
+                <h3 style="color: var(--accent-blue); margin: 2rem 0 1rem;">1. Install SDK</h3>
+                <div class="code-block">
+                    <pre>npm install @blackroad/auth</pre>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+
+                <h3 style="color: var(--accent-blue); margin: 2rem 0 1rem;">2. Initialize</h3>
+                <div class="code-block">
+                    <pre>import { BlackRoadAuth } from '@blackroad/auth';
+
+const auth = new BlackRoadAuth({
+  apiKey: 'YOUR_API_KEY',
+  project: 'your-project-id'
+});</pre>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+
+                <h3 style="color: var(--accent-blue); margin: 2rem 0 1rem;">3. Sign Up User</h3>
+                <div class="code-block">
+                    <pre>const { user, session } = await auth.signUp({
+  email: 'user@example.com',
+  password: 'secure-password'
+});
+
+console.log('User created:', user.id);</pre>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+
+                <h3 style="color: var(--accent-blue); margin: 2rem 0 1rem;">4. Sign In User</h3>
+                <div class="code-block">
+                    <pre>const { session } = await auth.signIn({
+  email: 'user@example.com',
+  password: 'secure-password'
+});
+
+// Access token for API calls
+const token = session.access_token;</pre>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+
+                <h3 style="color: var(--accent-blue); margin: 2rem 0 1rem;">5. Get Current User</h3>
+                <div class="code-block">
+                    <pre>const user = await auth.getUser();
+
+if (user) {
+  console.log('Authenticated:', user.email);
+} else {
+  console.log('Not authenticated');
+}</pre>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+        </div>
+
+        <div id="demo" class="tab-content">
+            <div class="grid">
+                <div class="card">
+                    <h2>🎯 Sign Up Demo</h2>
+                    <div class="auth-demo">
+                        <form onsubmit="handleSignUp(event)">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" placeholder="you@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-input" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" class="form-input" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Account</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>🔑 Sign In Demo</h2>
+                    <div class="auth-demo">
+                        <form onsubmit="handleSignIn(event)">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" placeholder="you@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-input" placeholder="••••••••" required>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                                    <input type="checkbox"> Remember me
+                                </label>
+                                <a href="#" style="color: var(--accent-blue); font-size: 0.9rem;">Forgot password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+
+                            <div style="margin-top: 1.5rem; text-align: center;">
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Or continue with</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <button type="button" class="btn btn-secondary">🔵 Google</button>
+                                    <button type="button" class="btn btn-secondary">⚫ GitHub</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
-        function notify(event) {
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('pre');
+            const code = codeBlock.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+
+        function handleSignUp(event) {
             event.preventDefault();
-            const email = event.target.querySelector('input').value;
-            alert('✅ Thanks! We\'ll notify ' + email + ' when Authentication Service launches!');
-            event.target.reset();
+            alert('🎉 Demo sign up successful! In production, this would create a new user account.');
+        }
+
+        function handleSignIn(event) {
+            event.preventDefault();
+            alert('✅ Demo sign in successful! In production, this would authenticate and create a session.');
         }
     </script>
 </body>
