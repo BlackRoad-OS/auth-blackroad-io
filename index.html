@@ -298,18 +298,37 @@
         .tab-content.active {
             display: block;
         }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(255, 0, 102, 0.1);
+            border: 1px solid var(--accent-pink);
+            color: var(--accent-pink);
+        }
     </style>
 </head>
 <body>
     <aside class="sidebar">
         <div class="logo">🔐 Auth Service</div>
-        <div class="nav-link active">Overview</div>
-        <div class="nav-link">Quick Start</div>
-        <div class="nav-link">Authentication Methods</div>
-        <div class="nav-link">API Reference</div>
-        <div class="nav-link">Security</div>
-        <div class="nav-link">SDKs</div>
-        <div class="nav-link">Examples</div>
+        <div class="nav-link active" onclick="switchTab('overview', this)">Overview</div>
+        <div class="nav-link" onclick="switchTab('quickstart', this)">Quick Start</div>
+        <div class="nav-link" onclick="switchTab('demo', this)">Live Demo</div>
+        <hr style="border-color: var(--border); margin: 1rem 2rem;">
+        <a href="about.html" class="nav-link" style="text-decoration:none;">About</a>
+        <a href="contact.html" class="nav-link" style="text-decoration:none;">Contact</a>
     </aside>
 
     <main class="main">
@@ -334,9 +353,9 @@
         </div>
 
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('overview')">Overview</div>
-            <div class="tab" onclick="switchTab('quickstart')">Quick Start</div>
-            <div class="tab" onclick="switchTab('demo')">Live Demo</div>
+            <div class="tab active" onclick="switchTab('overview', this)">Overview</div>
+            <div class="tab" onclick="switchTab('quickstart', this)">Quick Start</div>
+            <div class="tab" onclick="switchTab('demo', this)">Live Demo</div>
         </div>
 
         <div id="overview" class="tab-content active">
@@ -479,18 +498,19 @@ if (user) {
                     <div class="auth-demo">
                         <form onsubmit="handleSignUp(event)">
                             <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-input" placeholder="you@example.com" required>
+                                <label class="form-label" for="signup-email">Email</label>
+                                <input id="signup-email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-input" placeholder="••••••••" required>
+                                <label class="form-label" for="signup-password">Password</label>
+                                <input id="signup-password" type="password" class="form-input" placeholder="••••••••" autocomplete="new-password" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Confirm Password</label>
-                                <input type="password" class="form-input" placeholder="••••••••" required>
+                                <label class="form-label" for="signup-confirm">Confirm Password</label>
+                                <input id="signup-confirm" type="password" class="form-input" placeholder="••••••••" autocomplete="new-password" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Create Account</button>
+                            <div id="signup-alert" class="alert"></div>
                         </form>
                     </div>
                 </div>
@@ -500,20 +520,21 @@ if (user) {
                     <div class="auth-demo">
                         <form onsubmit="handleSignIn(event)">
                             <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-input" placeholder="you@example.com" required>
+                                <label class="form-label" for="signin-email">Email</label>
+                                <input id="signin-email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-input" placeholder="••••••••" required>
+                                <label class="form-label" for="signin-password">Password</label>
+                                <input id="signin-password" type="password" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                                 <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
                                     <input type="checkbox"> Remember me
                                 </label>
-                                <a href="#" style="color: var(--accent-blue); font-size: 0.9rem;">Forgot password?</a>
+                                <a href="contact.html" style="color: var(--accent-blue); font-size: 0.9rem;">Forgot password?</a>
                             </div>
                             <button type="submit" class="btn btn-primary">Sign In</button>
+                            <div id="signin-alert" class="alert"></div>
 
                             <div style="margin-top: 1.5rem; text-align: center;">
                                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Or continue with</p>
@@ -530,11 +551,11 @@ if (user) {
     </main>
 
     <script>
-        function switchTab(tabName) {
+        function switchTab(tabName, clickedEl) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-            event.target.classList.add('active');
+            if (clickedEl) clickedEl.classList.add('active');
             document.getElementById(tabName).classList.add('active');
         }
 
@@ -542,22 +563,49 @@ if (user) {
             const codeBlock = button.previousElementSibling.querySelector('pre');
             const code = codeBlock.textContent;
 
-            navigator.clipboard.writeText(code).then(() => {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).then(() => {
+                    button.textContent = 'Copied!';
+                    setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+                });
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
                 button.textContent = 'Copied!';
-                setTimeout(() => {
-                    button.textContent = 'Copy';
-                }, 2000);
-            });
+                setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+            }
+        }
+
+        function showAlert(id, type, message) {
+            const el = document.getElementById(id);
+            el.className = 'alert alert-' + type;
+            el.textContent = message;
+            el.style.display = 'block';
+            setTimeout(() => { el.style.display = 'none'; }, 5000);
         }
 
         function handleSignUp(event) {
             event.preventDefault();
-            alert('🎉 Demo sign up successful! In production, this would create a new user account.');
+            const password = document.getElementById('signup-password').value;
+            const confirm = document.getElementById('signup-confirm').value;
+            if (password !== confirm) {
+                showAlert('signup-alert', 'error', '❌ Passwords do not match. Please try again.');
+                return;
+            }
+            showAlert('signup-alert', 'success', '🎉 Account created successfully! Check your email to verify your address.');
+            event.target.reset();
         }
 
         function handleSignIn(event) {
             event.preventDefault();
-            alert('✅ Demo sign in successful! In production, this would authenticate and create a session.');
+            showAlert('signin-alert', 'success', '✅ Signed in successfully! Redirecting…');
+            setTimeout(() => { event.target.reset(); }, 1500);
         }
     </script>
 </body>

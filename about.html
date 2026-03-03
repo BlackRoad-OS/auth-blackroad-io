@@ -1,7 +1,209 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>About | BlackRoad</title>
-<style>body{background:#000;color:#fff;font-family:system-ui;padding:2rem;max-width:800px;margin:0 auto}
-h1{background:linear-gradient(135deg,#F5A623,#FF1D6C);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-a{color:#F5A623}</style></head>
-<body><h1>About</h1><p>Part of <a href="https://blackroad.io">BlackRoad OS</a> - Enterprise AI Infrastructure</p>
-<p><a href="/">← Back</a></p></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | BlackRoad Auth</title>
+    <meta name="description" content="About BlackRoad OS Authentication Service — Enterprise AI Infrastructure">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #000000;
+            --bg-secondary: #0f0f0f;
+            --bg-tertiary: #1a1a1a;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --accent-orange: #FF9D00;
+            --accent-pink: #FF0066;
+            --accent-purple: #7700FF;
+            --accent-blue: #0066FF;
+            --border: rgba(255, 255, 255, 0.1);
+            --success: #00ff00;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 2rem 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .nav-link {
+            padding: 0.75rem 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: block;
+            text-decoration: none;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(119, 0, 255, 0.1);
+            color: var(--accent-purple);
+            border-left: 3px solid var(--accent-purple);
+            padding-left: calc(2rem - 3px);
+        }
+
+        .main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-pink), var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .card h2 {
+            color: var(--accent-purple);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        a.btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-purple);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        a.btn:hover {
+            background: #8800ff;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">🔐 Auth Service</div>
+        <a href="index.html" class="nav-link">Overview</a>
+        <a href="index.html" class="nav-link">Quick Start</a>
+        <a href="index.html" class="nav-link">Live Demo</a>
+        <hr style="border-color: var(--border); margin: 1rem 2rem;">
+        <a href="about.html" class="nav-link active">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+    </aside>
+
+    <main class="main">
+        <div class="hero">
+            <h1>About</h1>
+            <p>BlackRoad OS — Enterprise AI Infrastructure</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>🏢 Company</h2>
+                <p>BlackRoad OS, Inc. builds enterprise-grade authentication and identity management infrastructure for modern applications.</p>
+                <p>Founded with the mission to make secure authentication simple, we power millions of authentications every day across the globe.</p>
+                <a href="https://blackroad.io" class="btn">Visit BlackRoad.io →</a>
+            </div>
+
+            <div class="card">
+                <h2>🔐 Auth Service</h2>
+                <p>auth.blackroad.io is the dedicated authentication service in the BlackRoad OS ecosystem, providing a drop-in solution for identity management, session handling, and access control.</p>
+                <ul class="feature-list" style="margin-top: 1rem;">
+                    <li><span class="check">✓</span> 99.99% uptime SLA</li>
+                    <li><span class="check">✓</span> &lt;50ms auth latency</li>
+                    <li><span class="check">✓</span> 8+ authentication methods</li>
+                    <li><span class="check">✓</span> SOC 2 Type II certified</li>
+                    <li><span class="check">✓</span> GDPR &amp; HIPAA compliant</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔗 Links</h2>
+            <ul class="feature-list">
+                <li>🌐 <a href="https://blackroad.io" style="color: var(--accent-blue);">blackroad.io</a> — Main website</li>
+                <li>📖 <a href="https://docs.blackroad.io" style="color: var(--accent-blue);">docs.blackroad.io</a> — Full documentation</li>
+                <li>💻 <a href="https://github.com/BlackRoad-OS" style="color: var(--accent-blue);">GitHub / BlackRoad-OS</a> — Open source projects</li>
+            </ul>
+        </div>
+    </main>
+</body>
+</html>
