@@ -1,0 +1,90 @@
+# wrangler.toml - BlackRoad Auth Cloudflare Workers Configuration
+# Autonomous Agent System for Cross-Repo Cohesiveness
+
+name = "auth-blackroad-io"
+main = "src/worker.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Account settings (set via environment or secrets)
+# account_id = "" # Set in CI/CD secrets
+
+[vars]
+ENVIRONMENT = "production"
+BLACKROAD_BRAND = "true"
+AUTO_RESOLVE_ENABLED = "true"
+COHESION_CHECK_INTERVAL = "3600"  # 1 hour in seconds
+
+# KV Namespaces for persistent state
+[[kv_namespaces]]
+binding = "AGENT_STATE"
+id = "agent_state_namespace"
+preview_id = "agent_state_preview"
+
+[[kv_namespaces]]
+binding = "REPO_CACHE"
+id = "repo_cache_namespace"
+preview_id = "repo_cache_preview"
+
+[[kv_namespaces]]
+binding = "TASK_QUEUE"
+id = "task_queue_namespace"
+preview_id = "task_queue_preview"
+
+# Durable Objects for stateful agents
+[durable_objects]
+bindings = [
+  { name = "AUTONOMOUS_AGENT", class_name = "AutonomousAgent" },
+  { name = "REPO_MONITOR", class_name = "RepoMonitor" },
+  { name = "COHESION_CHECKER", class_name = "CohesionChecker" },
+  { name = "SELF_RESOLVER", class_name = "SelfResolver" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["AutonomousAgent", "RepoMonitor", "CohesionChecker", "SelfResolver"]
+
+# Cron triggers for scheduled agent tasks
+[triggers]
+crons = [
+  "*/15 * * * *",   # Every 15 min - Agent heartbeat & quick checks
+  "0 * * * *",      # Every hour - Full repo sync
+  "0 */6 * * *",    # Every 6 hours - Deep cohesion analysis
+  "0 0 * * *"       # Daily - Self-resolution review
+]
+
+# Queue for async task processing
+[[queues.producers]]
+queue = "blackroad-agent-tasks"
+binding = "AGENT_TASKS"
+
+[[queues.consumers]]
+queue = "blackroad-agent-tasks"
+max_batch_size = 10
+max_batch_timeout = 30
+
+# R2 bucket for storing repo snapshots and analysis
+[[r2_buckets]]
+binding = "REPO_SNAPSHOTS"
+bucket_name = "blackroad-repo-snapshots"
+preview_bucket_name = "blackroad-repo-snapshots-preview"
+
+# D1 database for structured agent data
+[[d1_databases]]
+binding = "AGENT_DB"
+database_name = "blackroad-agent-db"
+database_id = "agent-db-id"
+
+# Analytics Engine for monitoring
+[[analytics_engine_datasets]]
+binding = "AGENT_ANALYTICS"
+dataset = "blackroad_agent_metrics"
+
+# Environment-specific overrides
+[env.staging]
+name = "auth-blackroad-io-staging"
+vars = { ENVIRONMENT = "staging", AUTO_RESOLVE_ENABLED = "false" }
+
+[env.development]
+name = "auth-blackroad-io-dev"
+vars = { ENVIRONMENT = "development", AUTO_RESOLVE_ENABLED = "false" }
